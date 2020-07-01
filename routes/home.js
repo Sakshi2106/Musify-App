@@ -72,6 +72,18 @@ spotifyApi.clientCredentialsGrant().then(
                     ninthAlbumName: ninthAlbumName,
             })
     })
+
+    
+    router.get('/search/:data', (req, res) => {
+      console.log('search word' + req.params.data);
+      spotifyApi.searchTracks(req.params.data)
+        .then((data) => {
+            res.send(data.body.tracks.items);
+        }, (err) => {
+          console.log(err)
+        })
+    })
+
   })
 
 module.exports= router
