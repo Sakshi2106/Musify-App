@@ -1,0 +1,48 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #000000f1;
+   
+    color: white;
+}
+
+@media (max-width: 600px) {
+    #search-keywords {
+        width: 200px!important;
+    }
+    
+}
+
+#search-keywords {
+    border-radius: 15px;
+    width: 600px;
+    background-color: rgba(0, 0, 0, 0.671);
+    color: #fff;
+}
+
+::placeholder {
+    color: #fff;
+}
+
+.fa-search {
+    color: white;
+}
+
+.form-inline {
+    margin-right: 30%;
+}
+
+.navbar-brand{
+    font-family: 'Great Vibes', cursive;
+
+    font-family: 'Marck Script', cursive;
+    font-size: 40px;
+}
+
+#navbar-top {
+    background-color: rgba(32, 32, 32, 0.651);
+    color: white;
+    z-index: 9998;
+    position: fixed;
+    top: 0%;
+    width: 100%;
+}
