@@ -1,34 +1,41 @@
 var express = require('express');
 var router = express.Router();
-var SpotifyWebApi = require('spotify-web-api-node');
+var request = require('request')
 
-// Create the api object with the credentials
-var spotifyApi = new SpotifyWebApi({
-    clientId: '945d014c29324d778ea8420a4c38c1e6',
-    clientSecret: '176cd38523fa43cab549712eff2d83a2'
-  });
+var client_id = '945d014c29324d778ea8420a4c38c1e6'; // Your client id
+var client_secret = '176cd38523fa43cab549712eff2d83a2'; // Your secret
 
-// Retrieve an access token.
-spotifyApi.clientCredentialsGrant().then(
-    function(data) {
-      console.log('The access token expires in ' + data.body['expires_in']);
-      console.log('The access token is ' + data.body['access_token']);
-   
-      // Save the access token so that it's used in future calls
-      spotifyApi.setAccessToken(data.body['access_token']);
-    },
-    function(err) {
-      console.log('Something went wrong when retrieving an access token', err);
-    }
-  );
-  
-  router.get('/', (req, res) =>{
-    spotifyApi.getAlbums(['2zkyMw73XzNXUQaXTb4cio', '4ceWEQarPyTyeb9TUeyLOG',
-    '54NUwj7U1MOhA1ZGbnhiMz', '4neocSMt40stXKK2B8Sy2G',
-    '6cunQQ7YZisYOoiFu2ywIq', '7LF4N7lvyDhrPBuCJ1rplJ',
-    '6leYdBPs1XzfUgpc8xgeSi', '3RZxrS2dDZlbsYtMRM89v8', '7J5iE51Mk97Mf0BjjwYXUZ'], 
-    (err, data) => {
-        if (err) throw err;
+var authOptions = {
+  url: 'https://accounts.spotify.com/api/token',
+  headers: {
+    'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+  },
+  form: {
+    grant_type: 'client_credentials'
+  },
+  json: true
+};
+
+var get_token = (optionsall, callback) => {
+    request.post(optionsall, (err, response) => {
+        if (!err && response.statusCode === 200){
+            callback(undefined, {token : response.body.access_token});
+        }
+    })
+}
+router.get('', (req, res) => {
+  get_token(authOptions, (error, data) =>{
+    var token = data.token;
+    console.log(token)
+    var options = {
+        url: 'https://api.spotify.com/v1/albums/?ids=2zkyMw73XzNXUQaXTb4cio,4ceWEQarPyTyeb9TUeyLOG,54NUwj7U1MOhA1ZGbnhiMz,4neocSMt40stXKK2B8Sy2G,6cunQQ7YZisYOoiFu2ywIq,7LF4N7lvyDhrPBuCJ1rplJ,6leYdBPs1XzfUgpc8xgeSi,3RZxrS2dDZlbsYtMRM89v8,7J5iE51Mk97Mf0BjjwYXUZ',
+        headers: {
+          'Authorization': 'Bearer ' + token
+        },
+        json: true
+      };
+      request.get(options, (err, data) => {
+        if(err) throw err;
             var firstAlbumImage = data.body.albums[0].images[0].url;
             var secondAlbumImage = data.body.albums[1].images[0].url;
             var thirdAlbumImage = data.body.albums[2].images[0].url;
@@ -48,8 +55,7 @@ spotifyApi.clientCredentialsGrant().then(
             var eigthAlbumName = data.body.albums[7].name;
             var ninthAlbumName = data.body.albums[8].name;
 
-            res.render('index',{
-                
+            res.render('index', {
                     title: 'Musify',
                     style:'index.css',
                     firstAlbumImage: firstAlbumImage,
@@ -70,12 +76,20 @@ spotifyApi.clientCredentialsGrant().then(
                     seventhAlbumName: seventhAlbumName,
                     eigthAlbumName: eigthAlbumName,
                     ninthAlbumName: ninthAlbumName,
-            })
-    })
+            });
+      });
+  
+})
+})
+
+
+  
+  
 
     
     router.get('/search/:data', (req, res) => {
       console.log('search word' + req.params.data);
+      console.log(req)
       spotifyApi.searchTracks(req.params.data)
         .then((data) => {
             res.send(data.body.tracks.items);
@@ -84,6 +98,6 @@ spotifyApi.clientCredentialsGrant().then(
         })
     })
 
-  })
+  
 
 module.exports= router
