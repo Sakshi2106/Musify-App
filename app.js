@@ -2,6 +2,9 @@ const express = require('express');
 const hbs = require('hbs');
 const homeRouter = require('./routes/home');
 const request = require('request');
+var cors = require('cors');
+var querystring = require('querystring');
+var cookieParser = require('cookie-parser');
 
 app = express();
 
@@ -17,6 +20,8 @@ app.set('view engine', 'hbs');
 
 // static folder middleware
 app.use(express.static('public'));
+app.use(cors());
+app.use(cookieParser());
 hbs.registerPartials(__dirname + '/views/partials/');
 
 // use router
@@ -29,6 +34,6 @@ app.get('*', function (req, res) {
 });
 
 
-app.listen(3000, function (req, res) {
+app.listen(8888, function (req, res) {
     console.log("listening at 3000");
 });
