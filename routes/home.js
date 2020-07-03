@@ -9,24 +9,6 @@ var cookieParser = require('cookie-parser');
 var client_id = '945d014c29324d778ea8420a4c38c1e6'; // Your client id
 var client_secret = '176cd38523fa43cab549712eff2d83a2'; // Your secret
 var redirect_uri = 'http://localhost:8888/callback';
-// var authOptions = {
-//   url: 'https://accounts.spotify.com/api/token',
-//   headers: {
-//     'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-//   },
-//   form: {
-//     grant_type: 'client_credentials'
-//   },
-//   json: true
-// };
-
-// var get_token = (optionsall, callback) => {
-//     request.post(optionsall, (err, response) => {
-//         if (!err && response.statusCode === 200){
-//             callback(undefined, {token : response.body.access_token});
-//         }
-//     })
-// }
 
 /**
  * Generates a random string containing numbers and letters
@@ -129,12 +111,12 @@ router.get('/callback', function(req, res) {
             var firstAlbumName = data.body.items[0].track.name;
             var secondAlbumName = data.body.items[1].track.name;
             var thirdAlbumName = data.body.items[2].track.name;
-            var fourthAlbumName = data.body.items[2].track.name;
-            var fifthAlbumName = data.body.items[2].track.name;
-            var sixthAlbumName = data.body.items[2].track.name;
-            var seventhAlbumName = data.body.items[2].track.name;
-            var eigthAlbumName = data.body.items[2].track.name;
-            var ninthAlbumName = data.body.items[2].track.name;
+            var fourthAlbumName = data.body.items[3].track.name;
+            var fifthAlbumName = data.body.items[4].track.name;
+            var sixthAlbumName = data.body.items[5].track.name;
+            var seventhAlbumName = data.body.items[6].track.name;
+            var eigthAlbumName = data.body.items[7].track.name;
+            var ninthAlbumName = data.body.items[8].track.name;
 
 
 
@@ -161,6 +143,7 @@ router.get('/callback', function(req, res) {
                     seventhAlbumName: seventhAlbumName,
                     eigthAlbumName: eigthAlbumName,
                     ninthAlbumName: ninthAlbumName,
+                    access_token: access_token,
                     
             });
 
