@@ -56,7 +56,7 @@ router.get('/login', function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = 'user-read-private user-read-email';
+  var scope = 'user-read-private user-top-read playlist-read-private user-read-recently-played';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -65,11 +65,10 @@ router.get('/login', function(req, res) {
       redirect_uri: redirect_uri,
       state: state
     }) );
-    console.log(req.query.code);
+    
     var code = req.query.code ;
     var state = req.query.state ;
-    console.log(code)
-    console.log(state)
+    
 });
 
 router.get('/callback', function(req, res) {
@@ -80,8 +79,7 @@ router.get('/callback', function(req, res) {
   var code = req.query.code ;
   var state = req.query.state ;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
-  console.log(code)
-  console.log(state)
+  
   if (state === null || state !== storedState) {
     res.redirect('/#' +
       querystring.stringify({
@@ -109,7 +107,7 @@ router.get('/callback', function(req, res) {
             refresh_token = body.refresh_token;
         console.log(access_token)
         var options = {
-          url: 'https://api.spotify.com/v1/albums/?ids=2zkyMw73XzNXUQaXTb4cio,4ceWEQarPyTyeb9TUeyLOG,54NUwj7U1MOhA1ZGbnhiMz,4neocSMt40stXKK2B8Sy2G,6cunQQ7YZisYOoiFu2ywIq,7LF4N7lvyDhrPBuCJ1rplJ,6leYdBPs1XzfUgpc8xgeSi,3RZxrS2dDZlbsYtMRM89v8,7J5iE51Mk97Mf0BjjwYXUZ',
+          url: 'https://api.spotify.com/v1/me/player/recently-played?type=track&limit=10',
           headers: { 'Authorization': 'Bearer ' + access_token },
           json: true
         };
@@ -118,24 +116,29 @@ router.get('/callback', function(req, res) {
         request.get(options, (err, data) => {
           
           if (err) throw error;
-          var firstAlbumImage = data.body.albums[0].images[0].url;
-            var secondAlbumImage = data.body.albums[1].images[0].url;
-            var thirdAlbumImage = data.body.albums[2].images[0].url;
-            var fourthAlbumImage = data.body.albums[3].images[0].url;
-            var fifthAlbumImage = data.body.albums[4].images[0].url;
-            var sixthAlbumImage = data.body.albums[5].images[0].url;
-            var seventhAlbumImage = data.body.albums[6].images[0].url;
-            var eigthAlbumImage = data.body.albums[7].images[0].url;
-            var ninthAlbumImage = data.body.albums[8].images[0].url;
-            var firstAlbumName = data.body.albums[0].name;
-            var secondAlbumName = data.body.albums[1].name;
-            var thirdAlbumName = data.body.albums[2].name;
-            var fourthAlbumName = data.body.albums[3].name;
-            var fifthAlbumName = data.body.albums[4].name;
-            var sixthAlbumName = data.body.albums[5].name;
-            var seventhAlbumName = data.body.albums[6].name;
-            var eigthAlbumName = data.body.albums[7].name;
-            var ninthAlbumName = data.body.albums[8].name;
+          console.log(data.body)
+            var firstAlbumImage = data.body.items[0].track.album.images[0].url
+            var secondAlbumImage = data.body.items[1].track.album.images[1].url;
+            var thirdAlbumImage = data.body.items[2].track.album.images[0].url;
+            var fourthAlbumImage = data.body.items[3].track.album.images[0].url;
+            var fifthAlbumImage = data.body.items[4].track.album.images[0].url;
+            var sixthAlbumImage = data.body.items[5].track.album.images[0].url;
+            var seventhAlbumImage = data.body.items[6].track.album.images[0].url;
+            var eigthAlbumImage = data.body.items[7].track.album.images[0].url;
+            var ninthAlbumImage = data.body.items[8].track.album.images[0].url;
+            var firstAlbumName = data.body.items[0].track.name;
+            var secondAlbumName = data.body.items[1].track.name;
+            var thirdAlbumName = data.body.items[2].track.name;
+            var fourthAlbumName = data.body.items[2].track.name;
+            var fifthAlbumName = data.body.items[2].track.name;
+            var sixthAlbumName = data.body.items[2].track.name;
+            var seventhAlbumName = data.body.items[2].track.name;
+            var eigthAlbumName = data.body.items[2].track.name;
+            var ninthAlbumName = data.body.items[2].track.name;
+
+
+
+
 
             res.render('index', {
                     title: 'Musify',
@@ -158,6 +161,7 @@ router.get('/callback', function(req, res) {
                     seventhAlbumName: seventhAlbumName,
                     eigthAlbumName: eigthAlbumName,
                     ninthAlbumName: ninthAlbumName,
+                    
             });
 
         });
