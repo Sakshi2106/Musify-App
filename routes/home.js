@@ -98,7 +98,7 @@ router.get('/callback', function(req, res) {
         request.get(options, (err, data) => {
           
           if (err) throw error;
-          console.log(data.body)
+          
             var firstAlbumImage = data.body.items[0].track.album.images[0].url
             var secondAlbumImage = data.body.items[1].track.album.images[1].url;
             var thirdAlbumImage = data.body.items[2].track.album.images[0].url;
