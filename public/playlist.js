@@ -6,10 +6,11 @@ $(document).ready(() => {
         success: (data) => {
             console.log(data);
             for (var i= 0; i < data.length; i++){
+                var num = i
                 $('.playlist').append(`
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                    <div class="row" style="padding-bottom: 20px;">
+                    <div class="row" style="padding-bottom: 20px;" >
                       <div class="col">
                         <p>${data[i].type}</p>
                         <h1><i>${data[i].name}</i></h1>
@@ -23,10 +24,13 @@ $(document).ready(() => {
       
                      </div>
                  </div>
-                 <div id = 'track' class = 'row'>
+                 
+                  <div id = 'track' class = 'row'> 
+
+                  </div>
                         
 
-                 </div>
+                 
                 `)
                 access_token = $('h6').text()
             $.ajax({
