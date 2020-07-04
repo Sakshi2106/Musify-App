@@ -49,6 +49,3 @@ $("#search").on('click',  (e) => {
          }
     });
 });
-$("#search").click(() => {
-    console.log("Search")
-})

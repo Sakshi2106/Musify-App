@@ -9,7 +9,8 @@ var cookieParser = require('cookie-parser');
 var client_id = '945d014c29324d778ea8420a4c38c1e6'; // Your client id
 var client_secret = '176cd38523fa43cab549712eff2d83a2'; // Your secret
 var redirect_uri = 'http://localhost:8888/callback';
-
+var access_token = 'token';
+var refresh_token = '';
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -38,7 +39,7 @@ router.get('/login', function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = 'user-read-private user-top-read playlist-read-private user-read-recently-played';
+  var scope = 'user-read-private user-top-read playlist-read-private user-read-recently-played playlist-read-collaborative';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -85,8 +86,8 @@ router.get('/callback', function(req, res) {
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
 
-        var access_token = body.access_token,
-            refresh_token = body.refresh_token;
+        access_token = body.access_token,
+        refresh_token = body.refresh_token;
         console.log(access_token)
         var options = {
           url: 'https://api.spotify.com/v1/me/player/recently-played?type=track&limit=10',
@@ -117,14 +118,18 @@ router.get('/callback', function(req, res) {
             var seventhAlbumName = data.body.items[6].track.name;
             var eigthAlbumName = data.body.items[7].track.name;
             var ninthAlbumName = data.body.items[8].track.name;
-
-
+            var firstID = data.body.items[0].track.id;
+            var secondID = data.body.items[1].track.id;
+            var thirdID = data.body.items[2].track.id;
+            var fourthID = data.body.items[3].track.id;
+            var fifthID = data.body.items[4].track.id;
 
 
 
             res.render('index', {
                     title: 'Musify',
                     style:'index.css',
+                    script: 'index.js',
                     firstAlbumImage: firstAlbumImage,
                     secondAlbumImage: secondAlbumImage,
                     thirdAlbumImage: thirdAlbumImage,
@@ -144,7 +149,11 @@ router.get('/callback', function(req, res) {
                     eigthAlbumName: eigthAlbumName,
                     ninthAlbumName: ninthAlbumName,
                     access_token: access_token,
-                    
+                    firstID: firstID,
+                    secondID: secondID,
+                    thirdID: thirdID,
+                    fourthID: fourthID,
+                    fifthID: fifthID
             });
 
         });
@@ -156,20 +165,43 @@ router.get('/callback', function(req, res) {
 
 
 
+router.get('/playlist', (req, res) => {
+  console.log(access_token)
+  var options = {
+    url: 'https://api.spotify.com/v1/me/playlists',
+    headers: { 'Authorization': 'Bearer ' + access_token },
+    json: true
+  };
   
+  request.get(options, (err, data) => {
+    if (err) throw err;
+   
+    res.send(data.body.items)
+  });
+});
+
+router.get('/playlistdata', (req, res) => {
+  console.log(access_token)
+  res.render('playlist', {script: 'playlist.js', access_token: access_token, style: 'playlist.css'})
+});
+
+
+router.get('/profile', (req, res) => {
+  console.log(access_token)
+  var options = {
+    url: 'https://api.spotify.com/v1/me',
+    headers: { 'Authorization': 'Bearer ' + access_token },
+    json: true
+  };
+  
+  request.get(options, (err, data) => {
+    if (err) throw err;
+    res.send(data.body.items);
+  })
   
 
-    
-    router.get('/search/:data', (req, res) => {
-      console.log('search word' + req.params.data);
-      console.log(req)
-      spotifyApi.searchTracks(req.params.data)
-        .then((data) => {
-            res.send(data.body.tracks.items);
-        }, (err) => {
-          console.log(err)
-        })
-    })
+})
+
 
   
 

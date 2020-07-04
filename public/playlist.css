@@ -1,0 +1,22 @@
+.jumbotron{
+    background: rgba(0, 0, 0, 0.719);
+    margin-top: 70px;
+	max-height: 350px;
+	color: white;
+}
+.card {
+    border: none;
+    background: rgb(0, 0, 0) ;
+}
+
+.card-title {
+    color: rgb(255, 255, 255);
+    word-break: break-all;
+    white-space: normal;
+}
+.card-text{
+    color: rgb(255, 255, 255);
+    word-break: break-all;
+    white-space: normal;   
+
+}
