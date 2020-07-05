@@ -1,0 +1,21 @@
+body {
+    background: url('https://www.emc-imc.org/fileadmin/_processed_/e/5/csm_thomas-kelley-78865-unsplash_d8f03abfad.jpg') ;
+    background-size: cover;
+}
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+  }
+ 
+ h1 {
+     font-size: 100px;
+     
+ } 
+
+a {
+    text-align: center;
+}

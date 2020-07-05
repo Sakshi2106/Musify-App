@@ -35,5 +35,5 @@ app.get('*', function (req, res) {
 
 
 app.listen(8888, function (req, res) {
-    console.log("listening at 3000");
+    console.log("Server ready at 8888");
 });

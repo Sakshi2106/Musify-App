@@ -30,7 +30,7 @@ var generateRandomString = function(length) {
 var stateKey = 'spotify_auth_state';
 
 router.get('', (req, res) => {
-  res.render('home.hbs')
+  res.render('home.hbs', {style: 'home.css'})
 })
 
 
