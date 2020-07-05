@@ -55,18 +55,6 @@ $(document).ready(() => {
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 $(document).ready(() => {
     $.ajax({
         url: "https://api.spotify.com/v1/recommendations?seed_tracks=" + $('#first').text() + "," + $('#second').text() + "," + $('#third').text() + ',' + $('#fourth').text() + ',' + $('#fifth').text(),

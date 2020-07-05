@@ -5,6 +5,7 @@ var request = require('request')
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
+const { isRegExp } = require('util');
 
 var client_id = '945d014c29324d778ea8420a4c38c1e6'; // Your client id
 var client_secret = '176cd38523fa43cab549712eff2d83a2'; // Your secret
@@ -39,7 +40,7 @@ router.get('/login', function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = 'user-read-private user-top-read playlist-read-private user-read-recently-played playlist-read-collaborative';
+  var scope = 'user-read-private  user-read-email user-top-read playlist-read-private user-read-recently-played playlist-read-collaborative';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -196,11 +197,27 @@ router.get('/profile', (req, res) => {
   
   request.get(options, (err, data) => {
     if (err) throw err;
-    res.send(data.body.items);
+    
+    name = data.body.display_name;
+    email = data.body.email;
+    followers = data.body.followers.total;
+    country = data.body.country
+    userID = data.body.id
+    res.render('profile', {
+      style:'profile.css',
+      name : name,
+      email : email,
+      followers : followers,
+      country : country,
+      userID : userID
+    })
+    
   })
   
 
-})
+});
+
+
 
 
   

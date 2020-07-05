@@ -1,0 +1,24 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: large;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  
+  
+  th {
+    background-color: rgb(102, 0, 102);
+    color: white;
+  }
+
+  .jumbotron{
+    background: rgba(0, 0, 0, 0.719);
+    
+	max-height: 350px;
+	color: white;
+}
