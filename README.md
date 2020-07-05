@@ -4,7 +4,7 @@ This project run on Node.js. On its website you can find instructions on how to 
 In order to run the project open the file in the same directory. Use the below command to run :
 $ node app.js
 Then, open http://localhost:8888 in a browser.
-Start the server at :http://localhost:8888
+
 You will be redirected to the page asking you to login with Spotify.
 Once user clicks on the Login with Spotify button you will we redirected to the spotify login page.
 User needs to login with its Spotify account details and the app will ask user to agree terms of the app.
